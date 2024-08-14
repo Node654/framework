@@ -1,0 +1,25 @@
+{
+    "name": "nodest/php-framework",
+    "description": "Php framework",
+    "version": "1.0.0",
+    "autoload": {
+        "psr-4": {
+            "Nodest\\Framework\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "nodest",
+            "email": "amtes927@gmail.com"
+        }
+    ],
+    "require": {
+        "nikic/fast-route": "^1.3"
+    },
+    "require-dev": {
+        "laravel/pint": "^1.17",
+        "symfony/var-dumper": "^7.1"
+    },
+    "license": "MIT",
+    "minimum-stability": "stable"
+}
