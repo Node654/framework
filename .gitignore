@@ -3,3 +3,5 @@ Dockerfile
 vhost.conf
 vendor
 public
+routes
+app

@@ -5,13 +5,15 @@ namespace Nodest\Framework\Http;
 class Response
 {
     public function __construct(
-        private mixed $content = '',
-        private int $status = 200,
+        private string $content = '',
+        private int $statusCode = 200,
         private array $headers = [],
-    ) {}
+    ) {
+        http_response_code($this->statusCode);
+    }
 
-    public function send(): void
+    public function send(): string
     {
-        echo $this->content;
+        return $this->content;
     }
 }

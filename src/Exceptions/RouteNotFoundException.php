@@ -2,7 +2,4 @@
 
 namespace Nodest\Framework\Exceptions;
 
-class RouteNotFoundException extends HttpException
-{
-
-}
+class RouteNotFoundException extends HttpException {}

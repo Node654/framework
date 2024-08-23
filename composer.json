@@ -4,7 +4,9 @@
     "version": "1.0.0",
     "autoload": {
         "psr-4": {
-            "Nodest\\Framework\\": "src/"
+            "Nodest\\Framework\\": "src/",
+            "App\\": "app/",
+            "Nodest\\Framework\\Tests\\": "tests/"
         }
     },
     "authors": [
@@ -14,11 +16,14 @@
         }
     ],
     "require": {
-        "nikic/fast-route": "^1.3"
+        "nikic/fast-route": "^1.3",
+        "league/container": "^4.2.2",
+        "ext-http": "*"
     },
     "require-dev": {
         "laravel/pint": "^1.17",
-        "symfony/var-dumper": "^7.1"
+        "symfony/var-dumper": "^7.1",
+        "phpunit/phpunit": "^11.3"
     },
     "license": "MIT",
     "minimum-stability": "stable"

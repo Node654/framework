@@ -2,7 +2,4 @@
 
 namespace Nodest\Framework\Exceptions;
 
-class MethodNotAllowedException extends HttpException
-{
-
-}
+class MethodNotAllowedException extends HttpException {}

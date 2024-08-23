@@ -12,15 +12,23 @@ use function FastRoute\simpleDispatcher;
 
 class Router implements RouterInterface
 {
-    public function dispatch(Request $request)
+    /**
+     * @throws RouteNotFoundException
+     * @throws MethodNotAllowedException
+     */
+    public function dispatch(Request $request): array
     {
         [$handler, $vars] = $this->extractRouteInfo($request);
-        
+
         [$controller, $method] = $handler;
-        
+
         return [[new $controller, $method], $vars];
     }
 
+    /**
+     * @throws RouteNotFoundException
+     * @throws MethodNotAllowedException
+     */
     private function extractRouteInfo(Request $request)
     {
         $dispatcher = simpleDispatcher(function (RouteCollector $r) {
@@ -36,15 +44,18 @@ class Router implements RouterInterface
             $request->getUri()
         );
 
-        switch($routeInfo[0])
-        {
+        switch ($routeInfo[0]) {
             case Dispatcher::FOUND:
                 return [$routeInfo[1], $routeInfo[2]];
             case Dispatcher::METHOD_NOT_ALLOWED:
                 $allowedMethods = implode(', ', $routeInfo[1]);
-                throw new MethodNotAllowedException("Support HTTP methods: $allowedMethods");
+                $e = new MethodNotAllowedException("Support HTTP methods: $allowedMethods");
+                $e->setStatusCode(405);
+                throw $e;
             default:
-                throw new RouteNotFoundException("Route not found");
+                $e = new RouteNotFoundException('Route not found');
+                $e->setStatusCode(404);
+                throw $e;
         }
     }
 }
