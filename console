@@ -1,0 +1,20 @@
+#!usr/bin/env php
+
+<?php
+
+
+use Nodest\Framework\Console\Kernel;
+
+define('BASE_URL', dirname(__FILE__));
+
+require_once BASE_URL.'/vendor/autoload.php';
+
+/** * @var \Psr\Container\ContainerInterface $container */
+
+$container = require_once BASE_URL.'/config/services.php';
+
+$kernel = $container->get(Kernel::class);
+
+$status = $kernel->handle();
+
+exit($status);

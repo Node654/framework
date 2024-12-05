@@ -4,7 +4,7 @@ namespace Nodest\Framework\Exceptions;
 
 class HttpException extends \Exception
 {
-    private int $statusCode = 404;
+    private int $statusCode = 400;
 
     public function getStatusCode(): int
     {

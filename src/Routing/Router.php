@@ -2,13 +2,11 @@
 
 namespace Nodest\Framework\Routing;
 
-use FastRoute\Dispatcher;
-use FastRoute\RouteCollector;
+use Nodest\Framework\Controller\AbstractController;
 use Nodest\Framework\Exceptions\MethodNotAllowedException;
 use Nodest\Framework\Exceptions\RouteNotFoundException;
-use Nodest\Framework\Http\Request;
-
-use function FastRoute\simpleDispatcher;
+use Nodest\Framework\Http\Request\Request;
+use Psr\Container\ContainerInterface;
 
 class Router implements RouterInterface
 {
@@ -16,46 +14,19 @@ class Router implements RouterInterface
      * @throws RouteNotFoundException
      * @throws MethodNotAllowedException
      */
-    public function dispatch(Request $request): array
+    public function dispatch(Request $request, ContainerInterface $container): array
     {
-        [$handler, $vars] = $this->extractRouteInfo($request);
+        $handler = $request->getRouteHandler();
+        $vars = $request->getRouteArgs();
 
-        [$controller, $method] = $handler;
+        [$controllerId, $method] = $handler;
 
-        return [[new $controller, $method], $vars];
-    }
+        $controller = $container->get($controllerId);
 
-    /**
-     * @throws RouteNotFoundException
-     * @throws MethodNotAllowedException
-     */
-    private function extractRouteInfo(Request $request)
-    {
-        $dispatcher = simpleDispatcher(function (RouteCollector $r) {
-            $routes = require_once BASE_URL.'/routes/web.php';
-
-            foreach ($routes as $route) {
-                $r->addRoute(...$route);
-            }
-        });
-
-        $routeInfo = $dispatcher->dispatch(
-            $request->getMethod(),
-            $request->getUri()
-        );
-
-        switch ($routeInfo[0]) {
-            case Dispatcher::FOUND:
-                return [$routeInfo[1], $routeInfo[2]];
-            case Dispatcher::METHOD_NOT_ALLOWED:
-                $allowedMethods = implode(', ', $routeInfo[1]);
-                $e = new MethodNotAllowedException("Support HTTP methods: $allowedMethods");
-                $e->setStatusCode(405);
-                throw $e;
-            default:
-                $e = new RouteNotFoundException('Route not found');
-                $e->setStatusCode(404);
-                throw $e;
+        if (is_subclass_of($controller, AbstractController::class)) {
+            $controller->setRequest($request);
         }
+
+        return [[$controller, $method], $vars];
     }
 }

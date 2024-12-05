@@ -2,9 +2,10 @@
 
 namespace Nodest\Framework\Routing;
 
-use Nodest\Framework\Http\Request;
+use League\Container\Container;
+use Nodest\Framework\Http\Request\Request;
 
 interface RouterInterface
 {
-    public function dispatch(Request $request);
+    public function dispatch(Request $request, Container $container): array;
 }

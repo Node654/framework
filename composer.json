@@ -18,7 +18,10 @@
     "require": {
         "nikic/fast-route": "^1.3",
         "league/container": "^4.2.2",
-        "ext-http": "*"
+        "vlucas/phpdotenv": "^5.6.1",
+        "twig/twig": "^3.11",
+        "doctrine/dbal": "^4.1.0",
+        "psr/event-dispatcher": "^1.0"
     },
     "require-dev": {
         "laravel/pint": "^1.17",
